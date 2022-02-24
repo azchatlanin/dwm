@@ -1,0 +1,6 @@
+#!/bin/bash 
+
+mem="$(free -m | awk 'NR==2{printf "%s", $3,$2,$3*100/$2 }')"
+total="$(free -m | awk 'NR==2{printf "%s", $2}')"
+result=$(($mem*100/$total))
+printf " mem: %s \\n" "$result%"
