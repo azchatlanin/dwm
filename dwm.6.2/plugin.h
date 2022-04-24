@@ -1,5 +1,5 @@
 static void view_adjacent(const Arg *arg);
-static void attachaside(Client *c);
+ static void attachaside(Client *c);
 
 static const char *tagsd[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" };
 
@@ -26,10 +26,10 @@ void view_adjacent(const Arg *arg)
 }
 
 // add new win to stak
-void attachaside(Client *c) 
+void attachaside(Client *c)
 {
   Client *at = nexttiled(c->mon->clients);;
-  if(c->mon->sel == NULL || c->mon->sel->isfloating || !at) 
+  if(c->mon->sel == NULL || c->mon->sel->isfloating || !at)
   {
     attach(c);
     return;
@@ -111,4 +111,53 @@ void tcl(Monitor * m)
 		if (h != m->wh)
 			y = c->y + HEIGHT(c);
 	}
+}
+
+void
+tile_left(Monitor *m)
+{
+  unsigned int i, n, h, mw, my, ty, ns;
+	Client *c;
+
+	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+	if (n == 0)
+		return;
+
+  if(n == 1)
+  {
+		c = nexttiled(m->clients);
+		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
+		return;
+	}
+
+	if (n > m->nmaster)
+  {
+		mw = m->nmaster ? m->ww * m->mfact : 0;
+    ns = m->nmaster > 0 ? 2 : 1;
+  }
+	else
+  {
+    mw = m->ww - m->gappx;
+    ns = 1;
+  }
+
+  for (i = 0, my = ty = m->gappx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
+		if (i < m->nmaster) 
+    {
+      h = (m->wh - my) / (MIN(n, m->nmaster) - i) - m->gappx;
+      //resize(c, m->wx + m->gappx, m->wy + my, mw - 2*c->bw - m->gappx*(5-ns)/2, h - 2*c->bw, 0);
+      resize(c, m->wx + m->gappx / 2 + m->ww - mw, m->wy + my, mw - (2 * c->bw + m->gappx/2), h - (2*c->bw), 0);
+      //resize(c, m->wx + m->ww - mw, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);
+      if (my + HEIGHT(c) + m->gappx < m->wh)
+        my += HEIGHT(c) + m->gappx;
+		} 
+    else 
+    {
+      h = (m->wh - ty) / (n - i) - m->gappx;
+      //resize(c, m->wx + mw + m->gappx/ns, m->wy + ty, m->ww - mw - (2*c->bw) - m->gappx*(5-ns)/2, h - 2*c->bw, 0);
+      //resize(c, m->wx + m->gappx/ns, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
+      resize(c, m->wx, m->wy + ty, m->ww - mw - (2*c->bw) - m->gappx/4, h - (2*c->bw), 0);
+      if(ty + HEIGHT(c) + m->gappx < m->wh)
+        ty += HEIGHT(c) + m->gappx;
+		}
 }

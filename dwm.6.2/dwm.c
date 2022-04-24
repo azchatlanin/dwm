@@ -250,7 +250,7 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 	[ConfigureRequest] = configurerequest,
 	[ConfigureNotify] = configurenotify,
 	[DestroyNotify] = destroynotify,
-	[EnterNotify] = enternotify,
+	/*[EnterNotify] = enternotify, // change focus then move mouse !!! */
 	[Expose] = expose,
 	[FocusIn] = focusin,
 	[KeyPress] = keypress,
@@ -2141,19 +2141,19 @@ xerrorstart(Display *dpy, XErrorEvent *ee)
 	return -1;
 }
 
-//void
-//zoom(const Arg *arg)
-//{
-//	Client *c = selmon->sel;
+// void
+// zoom(const Arg *arg)
+// {
+// Client *c = selmon->sel;
 //
-//	if (!selmon->lt[selmon->sellt]->arrange
-//	|| (selmon->sel && selmon->sel->isfloating))
-//		return;
-//	if (c == nexttiled(selmon->clients))
-//		if (!c || !(c = nexttiled(c->next)))
-//			return;
-//	pop(c);
-//}
+// if (!selmon->lt[selmon->sellt]->arrange
+// || (selmon->sel && selmon->sel->isfloating))
+// 	return;
+// if (c == nexttiled(selmon->clients))
+// 	if (!c || !(c = nexttiled(c->next)))
+// 		return;
+// pop(c);
+// }
 
 int main(int argc, char *argv[])
 {
