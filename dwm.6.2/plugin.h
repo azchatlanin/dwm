@@ -1,5 +1,5 @@
 static void view_adjacent(const Arg *arg);
- static void attachaside(Client *c);
+static void attachaside(Client *c);
 
 static const char *tagsd[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" };
 
@@ -113,8 +113,7 @@ void tcl(Monitor * m)
 	}
 }
 
-void
-tile_left(Monitor *m)
+void tile_left(Monitor *m)
 {
   unsigned int i, n, h, mw, my, ty, ns;
 	Client *c;
@@ -160,4 +159,38 @@ tile_left(Monitor *m)
       if(ty + HEIGHT(c) + m->gappx < m->wh)
         ty += HEIGHT(c) + m->gappx;
 		}
+}
+
+
+// horizontal stack layout
+void horizgrid(Monitor *m) {
+	Client *c;
+	unsigned int n, i;
+	int w = 0;
+	int ntop, nbottom = 0;
+
+	/* Count windows */
+	for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+
+	if(n == 0)
+		return;
+	else if(n == 1) { /* Just fill the whole screen */
+		c = nexttiled(m->clients);
+		resize(c, m->wx, m->wy, m->ww - (2*c->bw), m->wh - (2*c->bw), False);
+	} else if(n == 2) { /* Split vertically */
+		w = m->ww / 2;
+		c = nexttiled(m->clients);
+		resize(c, m->wx, m->wy, w - (2*c->bw), m->wh - (2*c->bw), False);
+		c = nexttiled(c->next);
+		resize(c, m->wx + w, m->wy, w - (2*c->bw), m->wh - (2*c->bw), False);
+	} else {
+		ntop = n / 2;
+		nbottom = n - ntop;
+		for(i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
+			if(i < ntop)
+				resize(c, m->wx + i * m->ww / ntop, m->wy, m->ww / ntop - (2*c->bw), m->wh / 2 - (2*c->bw), False);
+			else
+				resize(c, m->wx + (i - ntop) * m->ww / nbottom, m->wy + m->wh / 2, m->ww / nbottom - (2*c->bw), m->wh / 2 - (2*c->bw), False);
+		}
+	}
 }

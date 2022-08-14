@@ -1,22 +1,23 @@
 /* aappearance */
-static const unsigned int borderpx            = 4;        /* border pixel of windows */
+static const unsigned int borderpx            = 2;        /* border pixel of windows */
 static const unsigned int snap                = 37;       /* snap pixel */
 static const int showbar                      = 1;        /* 0 means no bar */
 static const int topbar                       = 1;        /* 0 means bottom bar */
 static const int gappx                        = 8;        /* gaps between windows */
 
-static const char *fonts[]                    = { "Monospace Regular:size=10" };        /* шрифт бара*/
+static const char *fonts[]                    = { 
+                                                  "Monospace Regular:size=10", 
+                                                  "JoyPixels:pixelsize=18:antialias=true;autohint=true",
+                                                  "Symbols Nerd Font:pixelsize=18:antialias=true;autohint=true"
+                                                };        /* шрифт бара*/
 static const char dmenufont[]                 = "Monospace Regular:size=10";            /* шрифт dmenu*/
 
-static const char col_gray1[]                 = "#23252e";   
+static const char col_gray1[]                 = "#1f1f2e";   
 static const char col_gray2[]                 = "#e6e6e6";    
 static const char col_gray3[]                 = "#e6e6e6";     
 static const char col_gray4[]                 = "#23252e";      
-static const char col_cyan[]                  = "#304969";       
+static const char col_cyan[]                  = "#4681BD";       
 static const char border_color[]              = "#339966";        
-//static const char border_color[]              = "#0080ff";        
-//static const char border_color[]              = "#ba931c";        
-//static const char border_color[]              = "#ffbf00";        
 static const char border_color_no_select[]    = "#30455e";        
 static const char *colors[][3]                = {
                                                   /*               fg         bg         border   */
@@ -25,18 +26,22 @@ static const char *colors[][3]                = {
                                                 };
 
 /* tagging */
-static const char *tags[] = { "www", "chat", "worker", "helper", "terminal", "sandbox",  "server", "3D graphics", "cads", "zoom", "dbeaver", "postman" };
+static const char *tags[] = { "", "chat", "worker", "helper", "terminal", "C++", "sandbox",  "server", "3D graphics", "cads", "vpn", "discord", "zoom", "dbeaver", "postman" };
 
 static const Rule rules[] = {
 	/* xprop(1): */
 	/* class                 instance                 title       tags mask          isfloating      monitor */
   { "Google-chrome",      "google-chrome",          NULL,       1 << 0,            False,          -1 },
   { "TelegramDesktop",     NULL,                    NULL,       1 << 1,            False,          -1 },
-  { "worker",             "tilix",                  NULL,       1 << 2,            False,          -1 },
-  { "helper",             "tilix",                  NULL,       1 << 3,            False,          -1 },
-  { "zoom",                NULL,                    NULL,       1 << 9,            False,          -1 },
-  { "DBeaver",             NULL,                    NULL,       1 << 10,           False,          -1 },
-  { "Postman",             NULL,                    NULL,       1 << 11,           False,          -1 },
+  { "terminal_worker",    "tilix",                  NULL,       1 << 2,            False,          -1 },
+  { "terminal_helper",    "tilix",                  NULL,       1 << 3,            False,          -1 },
+  { "anki",                NULL,                    NULL,       1 << 5,            False,          -1 },
+  { "emuse",               NULL,                    NULL,       1 << 6,            False,          -1 },
+  { "trycaster",           NULL,                    NULL,       1 << 6,            False,          -1 },
+  { "discord",             NULL,                    NULL,       1 << 11,           False,          -1 },
+  { "zoom",                NULL,                    NULL,       1 << 12,           False,          -1 },
+  { "DBeaver",             NULL,                    NULL,       1 << 13,           False,          -1 },
+  { "Postman",             NULL,                    NULL,       1 << 14,           False,          -1 },
 };
 
 /* layout(s) */
@@ -45,8 +50,8 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
 static Layout layouts[] = {
-	/* symbol               function */
 	{ "=[]",                tile_left }, //  is default layout
+  //{ "###",                horizgrid },
 	//{ "[]=",                tile }, //  is default layout
 	//{ "|||",                tcl }, // five layout
 	{ "><>",                NULL },
